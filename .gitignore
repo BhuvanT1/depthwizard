@@ -41,3 +41,8 @@ viewer/data/ian*_*/
 viewer/data/nepal_*/
 test_*.py
 visualize_gamus*.py
+
+# Scene GeoTIFFs live on the data-v1 release: python scripts/download_data.py
+data/raw/*.tif
+!data/raw/synthetic.tif
+data/raw/*.tif.part

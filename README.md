@@ -5,7 +5,15 @@
 Smart India Hackathon 2026 · Problem Statement **SIH26175** · ISRO / Space
 Applications Centre · Theme: Disaster Management
 
-Built by team **WorksOnMyMachine** (formerly DepthWizards).
+Built by team **WorksOnMyMachine** (formerly DepthWizards). This repository is a
+copy of the team repository,
+**[ArnabTechiee/depthwizard](https://github.com/ArnabTechiee/depthwizard)**,
+where the full commit history lives. See [Team and history](#team-and-history).
+
+![Antakya scene in the 3D viewer, with the flood slider raised](docs/media/viewer.gif)
+
+*Antakya, Türkiye: 125 of 167 buildings measured from their own shadows, then a
+simulated 13 m water level. Recorded from the committed viewer data.*
 
 ---
 
@@ -262,10 +270,15 @@ downloads:
 python -m http.server 8000        # then open localhost:8000/viewer/
 ```
 
-**Want to re-run the pipeline?** The source GeoTIFFs are committed too, so
-everything downstream regenerates in a few minutes:
+**Want to re-run the pipeline?** The source GeoTIFFs (about 12.6 MB each) are
+published on the [`data-v1` release](https://github.com/BhuvanT1/depthwizard/releases/tag/data-v1)
+rather than committed. Fetch them, checksum-verified, then everything downstream
+regenerates in a few minutes:
 
 ```bash
+python scripts/download_data.py antakya fm     # or no arguments for all seven scenes
+python -m pipeline.ingest      data/raw/antakya.tif --max-size 1024
+python -m pipeline.ingest      data/raw/fm.tif      --max-size 2048
 python -m pipeline.depth_local antakya fm --model base
 python -m pipeline.depth_check antakya --orientation-from synthetic
 python -m pipeline.depth_check fm      --orientation-from synthetic
@@ -276,7 +289,8 @@ python -m pipeline.planb       fm
 python -m pipeline.bake        antakya fm --grid 512
 ```
 
-All five terrain scenes, and the stratification report:
+All five terrain scenes, and the stratification report (after
+`python scripts/download_data.py` and the same stages for each scene):
 
 ```bash
 python -m pipeline.stratify --label antakya=urban fm=suburban atlas=hilly \
@@ -411,6 +425,17 @@ real-time video ingest, atmospheric correction, and any survey-grade accuracy
 claim.
 
 ---
+
+## Team and history
+
+Built for Smart India Hackathon 2026 by team WorksOnMyMachine (formerly
+DepthWizards). The original repository,
+[ArnabTechiee/depthwizard](https://github.com/ArnabTechiee/depthwizard), is
+maintained by Arnab Mondal and holds the complete commit history; this copy was
+uploaded in October 2026 and does not carry that history.
+
+<!-- My role: replace this comment with 2-4 bullets on exactly what you built,
+     e.g. which pipeline stages, experiments or viewer features were yours. -->
 
 ## Data sources
 
