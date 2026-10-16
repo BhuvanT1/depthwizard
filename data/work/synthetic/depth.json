@@ -1,0 +1,9 @@
+{
+  "scene": "synthetic",
+  "orientation": 1,
+  "raw_min": 3.330325126647949,
+  "raw_max": 6.732748985290527,
+  "p1": 3.3614208674430848,
+  "p99": 6.238578596115112,
+  "correlation_vs_truth": null
+}

@@ -1,0 +1,33 @@
+{
+  "scene": "fm",
+  "metric": "ridge",
+  "lidar_source": "USGS_LPC_FL_Southwest_2018_D18_SUPPLEMENTAL_w1428n4840.laz, USGS_LPC_FL_Southwest_2018_D18_SUPPLEMENTAL_w1428n4850.laz, USGS_LPC_FL_Southwest_2018_D18_SUPPLEMENTAL_w1429n4840.laz, USGS_LPC_FL_Southwest_2018_D18_SUPPLEMENTAL_w1429n4850.laz",
+  "dsm_coverage": 0.7034,
+  "all_pixels": {
+    "n": 4194304,
+    "rmse_m": 3.098,
+    "mae_m": 1.621,
+    "bias_m": -0.457,
+    "ref_mean_m": 1.758,
+    "pred_mean_m": 1.302,
+    "correlation": 0.3981,
+    "r2": -0.0375
+  },
+  "building_pixels": {
+    "n": 1454327,
+    "rmse_m": 5.24,
+    "mae_m": 4.442,
+    "bias_m": -1.257,
+    "ref_mean_m": 4.916,
+    "pred_mean_m": 3.658,
+    "correlation": -0.2709,
+    "r2": -1.4251
+  },
+  "per_building": {
+    "n_buildings": 140,
+    "rmse_m": 3.883,
+    "mae_m": 3.095,
+    "bias_m": -0.479,
+    "correlation": 0.0668
+  }
+}

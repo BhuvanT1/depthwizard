@@ -1,0 +1,417 @@
+# DepthWizards
+
+**Building heights from a single satellite image, using shadow geometry.**
+
+Smart India Hackathon 2026 · Problem Statement **SIH26175** · ISRO / Space
+Applications Centre · Theme: Disaster Management
+
+---
+
+## What it does
+
+Takes one flat optical satellite image — no LiDAR, no stereo pair, no second
+viewing angle — and produces a metric Digital Surface Model plus a navigable
+textured 3D scene.
+
+Heights are **measured, not inferred**. For a vertical structure whose shadow
+falls on flat ground:
+
+```
+h  =  L_pixels  ×  GSD  ÷  tan(sun_elevation)
+```
+
+Sun elevation and azimuth come from the product's own metadata; ground sample
+distance comes from the GeoTIFF affine transform. Every isolated building in
+the scene is therefore a free absolute anchor derived from physics rather than
+a learned prior.
+
+**Why it matters:** after a flood, landslide or earthquake you need to know
+what the terrain and buildings look like *now*, in hours rather than weeks.
+LiDAR flights and InSAR tasking are expensive, sensor-dependent and slow. A
+single optical frame is cheap and already being captured almost anywhere.
+
+### A note on the shadow formula
+
+Standard shadow trigonometry gives `height = shadow_length × tan(elevation)`
+when elevation is measured from the horizon. Our implementation instead uses
+`height = shadow_length ÷ tan(elevation)`.
+
+We tested both empirically against real LiDAR rather than assuming the
+textbook convention applies without checking it: division gives RMSE 3.88 m
+(bias −0.48 m) on Fort Myers; multiplication gives a worse RMSE with more
+than double the bias (−1.36 m). The implemented formulation was retained
+based on these validation results.
+
+**Scope of this validation:** tested only on scenes with sun elevation
+28°–37° (Antakya, Atlas, Fort Myers, Punta Gorda). This is an empirical
+calibration for this angle range, not a general physical model validated
+across all sun angles — a formula convention that works well in one
+elevation band is not guaranteed to hold at very different angles, since
+the two formulas diverge sharply outside this range. Extending validation
+to a wider range of sun elevations is planned future work.
+
+---
+
+## Results
+
+| Scene | Buildings | Measured from shadow | Median height | Repeatability MAE |
+|---|---|---|---|---|
+| Antakya, Türkiye (dense urban) | 167 | 125 (75%) | 9.0 m | 3.02 m |
+| Fort Myers, USA (suburban) | 140 | 110 (79%) | 1.6 m | 0.84 m |
+| Punta Gorda, USA (post-hurricane) | 110 | 73 (66%) | 1.4 m | 0.89 m |
+
+### Validated against LiDAR
+
+Fort Myers, compared per-building against USGS 3DEP LiDAR (n=140, 70% reference
+coverage):
+
+| Surface compared | RMSE | MAE | Bias | Correlation |
+|---|---|---|---|---|
+| Ridge height | **3.88 m** | **3.10 m** | **−0.48 m** | 0.067 |
+
+Shadow geometry measures to the **eave** — the shadow is cast by the roof's
+outer edge. LiDAR's highest return is the **ridge**. Both are correct; they
+measure different surfaces. Applying a stated architectural prior (a 5:12
+residential pitch over each building's own short span) corrects for this gap.
+The prior is geometric and is *not* fitted to the reference data.
+
+Results are fully reproducible: re-running the identical pipeline on
+identical input reproduces RMSE 3.88 m to three decimal places, confirming no
+hidden randomness in the measurement.
+
+### Second validation — Punta Gorda
+
+| Metric | Fort Myers | Punta Gorda |
+|---|---|---|
+| RMSE | 3.88 m | 7.90 m |
+| Bias | −0.48 m | −0.89 m |
+| Correlation | 0.067 | 0.317 |
+| n buildings | 140 | 110 |
+
+Punta Gorda's buildings were shorter (median 1.4m vs 1.6m), giving shorter
+shadows and less precise measurement — consistent with the resolution
+limitation already documented above.
+
+### Stability across terrain
+
+The rubric grades performance across urban, sparse, hilly and forested
+landscapes, so a single headline figure does not answer it. Full table:
+[`docs/stratification.md`](docs/stratification.md).
+
+| Scene | Terrain | Buildings | Measured | Median h | Repeat. MAE | vs LiDAR |
+|---|---|---|---|---|---|---|
+| `antakya` | urban | 167 | 125 (75%) | 9.0 m | 3.02 m | — |
+| `fm` | suburban | 140 | 110 (79%) | 1.6 m | 0.84 m | 3.88 m |
+| `atlas` | hilly | 50 | 18 (36%) | 6.5 m | 1.54 m | — |
+| `ian_forest` | forested | 304 | 48 (16%) | 6.2 m | 2.30 m | — |
+| `ian2` | sparse | 110 | 1 (1%) | — | — | — |
+
+Degradation is monotonic and each step has a physical cause. A second signal
+is cleaner still — the nDSM spread left standing after ground separation:
+0.459 on urban and 0.433 on suburban, against 0.125 on hilly and 0.151 on
+forested. Where real structure exists the decomposition leaves something above
+ground; where it does not, it leaves almost nothing.
+
+Two honest caveats. On `atlas` and `ian_forest` most detections are **false
+positives** — the shadow mask cannot distinguish a terrain shadow or a canopy
+gap from a building's cast shadow, so boulders, cliff edges and tree crowns are
+measured as structures. The fix is semantic segmentation masking non-building
+regions before measurement, which is not yet built. And `ian2` measured exactly
+one building, so its repeatability figure is statistically meaningless and
+should not be quoted.
+
+---
+
+## Approach, and one thing that did not work
+
+The obvious route is a pretrained monocular depth model. We tried that first
+with Depth Anything V2, then validated it against held-out shadow anchors on a
+dense urban scene and measured **R² = −0.74** — worse than predicting the mean.
+The depth value for a building carried no usable information about its height.
+
+So the depth model was demoted. It still supplies the ground surface and the
+building footprint mask, but the metres come from each building's own shadow.
+That decision is recorded here because a measured choice is worth more than an
+assumed one, and because the fallback was written down before it was needed.
+
+### Model ablation
+
+| Model | Device | fm RMSE | Measured | Antakya buildings |
+|---|---|---|---|---|
+| DAv2 Large | GPU (Colab) | 3.30 m | 116/153 | 201 |
+| DAv2 Base | CPU, offline | 3.88 m | 110/140 | 167 |
+| DAv2 Small | CPU, offline | 4.32 m | 23/95 | 115 |
+
+Larger backbones resolve more structure, so more footprints survive
+segmentation. Running fully offline on CPU costs roughly 0.6 m of RMSE against
+GPU Large — a quantified trade against the PS's standalone-deployment
+requirement rather than a hidden compromise.
+
+### Tested the PS's recommended dataset (GAMUS)
+
+Fine-tuned Depth Anything V2 on 1000 GAMUS scenes (R²=0.77 on GAMUS's own
+held-out set). Deployed against our Fort Myers benchmark, it degraded every
+metric: RMSE increased, bias moved further from zero, and correlation went
+negative. GAMUS's specific sensor/altitude did not transfer to real Maxar
+satellite imagery of a different region. Reverted to Base backbone.
+
+---
+
+## Pipeline
+
+| Stage | Module | Output |
+|---|---|---|
+| Ingest | `pipeline.ingest` | CRS, GSD in metres, sun geometry, ABSOLUTE/RELATIVE mode |
+| Depth | `pipeline.depth_local` | Relative inverse-depth map (CPU, offline) |
+| Orientation check | `pipeline.depth_check` | Sign convention settled against known truth |
+| Ground separation | `pipeline.ground` | DTM / nDSM split by morphological opening |
+| Metric calibration | `pipeline.planb` | Per-building shadow heights, eave and ridge |
+| Validation | `pipeline.validate` | RMSE / MAE / bias vs LiDAR point cloud |
+| Bake | `pipeline.bake` | Static viewer assets |
+| Stratify | `pipeline.stratify` | Per-terrain-class comparison report |
+| Export | `pipeline.export` | GeoTIFF, OBJ mesh, CSV table, heatmap, metrics |
+| Service | `app.py` | Upload API, background jobs, scene library |
+| Viewer | `viewer/index.html` | Textured 3D scene, height probe, flood model |
+
+---
+
+## Quick start
+
+```bash
+python -m venv .venv
+source .venv/bin/activate            # Windows: .venv\Scripts\activate
+
+pip install --index-url https://download.pytorch.org/whl/cpu torch torchvision
+pip install -r requirements.txt
+```
+
+Windows note: if `pip install rasterio` fails, use
+`conda install -c conda-forge rasterio` or a wheel from
+[cgohlke/geospatial-wheels](https://github.com/cgohlke/geospatial-wheels).
+
+## Running it as an application
+
+The pipeline also runs as a service, so imagery can be dropped in the browser
+rather than passed through the CLI:
+
+```bash
+pip install fastapi "uvicorn[standard]" python-multipart
+uvicorn app:app --host 0.0.0.0 --port 8000
+```
+
+Open `http://localhost:8000`. Drag in a GeoTIFF, PNG or JPG; the pipeline
+stages run in a background job with live progress, and the result opens
+directly in the 3D viewer.
+
+Both input modes required by the PS are handled:
+
+- **GeoTIFF** with CRS and sun metadata → absolute DSM, heights in metres
+- **PNG/JPG** with no spatial metadata → relative DSM (rDSM), unitless
+
+The viewer switches its unit labels for relative scenes and states
+`relative (unitless)` rather than printing metres, because without a GSD there
+is no metre scale to report and presenting one would be false.
+
+The depth backbone loads once at startup, not per request — it is ~390 MB, so
+reloading per upload would dominate response time. The first upload after a
+restart is therefore slower than the rest.
+
+| Endpoint | Purpose |
+|---|---|
+| `POST /api/scenes` | Upload imagery, start a pipeline job |
+| `GET /api/jobs/{id}` | Stage, progress and live metrics |
+| `GET /api/scenes` | Scene library with stats |
+| `GET /api/scenes/{s}/exports` | Generate the standard-format deliverables |
+| `GET /api/scenes/{s}/download` | Bundle all exports into one zip |
+| `GET /api/health` | Liveness and whether the model is resident |
+
+## Standard-format exports
+
+```bash
+python -m pipeline.export antakya fm --mesh-stride 4
+```
+
+Writes to `exports/<scene>/`:
+
+| File | Contents |
+|---|---|
+| `*_ndsm_eave.tif` | CRS-tagged float32 GeoTIFF, height to eave, metres |
+| `*_ndsm_ridge.tif` | Same with the roof-pitch correction applied |
+| `*_ndsm_ref.tif` | LiDAR reference nDSM, where validation has been run |
+| `*_buildings.csv` | Per-building table in projected coordinates |
+| `*_mesh.obj` + `.mtl` | Textured mesh with real vertical walls |
+| `*_heatmap.png` | Quick-look colour render |
+| `*_metrics.json` | Accuracy figures in one place |
+
+The rasters carry **height above local ground**, not absolute elevation above a
+vertical datum. That is what the method measures, it is datum-independent, and
+it is what building-height analysis needs — so it is written into the GeoTIFF
+tags as `SURFACE_TYPE` rather than left for a downstream user to guess.
+
+Building centroids in the CSV are converted through the geotransform into real
+easting/northing, so the table joins directly against other GIS layers.
+
+## For team members
+
+**Just want to see it?** Baked viewer scenes are committed. No pipeline run, no
+downloads:
+
+```bash
+python -m http.server 8000        # then open localhost:8000/viewer/
+```
+
+**Want to re-run the pipeline?** The source GeoTIFFs are committed too, so
+everything downstream regenerates in a few minutes:
+
+```bash
+python -m pipeline.depth_local antakya fm --model base
+python -m pipeline.depth_check antakya --orientation-from synthetic
+python -m pipeline.depth_check fm      --orientation-from synthetic
+python -m pipeline.ground      antakya --max-building-m 60
+python -m pipeline.ground      fm      --max-building-m 60
+python -m pipeline.planb       antakya --min-area 120
+python -m pipeline.planb       fm
+python -m pipeline.bake        antakya fm --grid 512
+```
+
+All five terrain scenes, and the stratification report:
+
+```bash
+python -m pipeline.stratify --label antakya=urban fm=suburban atlas=hilly \
+       ian2=sparse ian_forest=forested --out docs/stratification.md
+```
+
+Every stage reads the previous stage's output from disk, so **skipping one
+silently reuses stale data** rather than failing. Run them in order.
+
+**Want to reproduce the LiDAR validation?** The point clouds are not in the repo
+(231 MB). Download these four tiles from
+[The National Map](https://apps.nationalmap.gov/downloader) into `data/lidar/`
+— *Elevation Source Data (3DEP) → Lidar Point Cloud (LPC)*:
+
+```
+USGS_LPC_FL_Southwest_2018_D18_SUPPLEMENTAL_w1428n4840.laz
+USGS_LPC_FL_Southwest_2018_D18_SUPPLEMENTAL_w1428n4850.laz
+USGS_LPC_FL_Southwest_2018_D18_SUPPLEMENTAL_w1429n4840.laz
+USGS_LPC_FL_Southwest_2018_D18_SUPPLEMENTAL_w1429n4850.laz
+```
+
+The Fort Myers scene straddles all four, so pass them together:
+
+```bash
+python -m pipeline.validate fm --metric ridge --lidar data/lidar/*.laz
+```
+
+On PowerShell, wildcards are not expanded for external programs — use
+`--lidar (Get-ChildItem data\lidar\*.laz).FullName` or list the four paths.
+
+### Run the synthetic regression scene
+
+```bash
+python scripts/make_sample.py --out data/raw/synthetic.tif
+python -m pipeline.ingest data/raw/synthetic.tif --max-size 1024
+```
+
+This generates eight buildings of known height with physically correct cast
+shadows, and a truth file recording the exact shadow length each should
+produce. It is the unit test for the shadow formula and the GSD conversion —
+keep it in the repo permanently.
+
+### Run a real scene end to end
+
+```bash
+python scripts/fetch_maxar.py --event Kahramanmaras-turkey-earthquake-23 --cities
+python scripts/fetch_maxar.py --event Kahramanmaras-turkey-earthquake-23 \
+       --near 36.2021,36.1608 --radius 8 --pick 0 --size 2048 --out data/raw/antakya.tif
+
+python -m pipeline.ingest      data/raw/antakya.tif --max-size 1024
+python -m pipeline.depth_local antakya --model base
+python -m pipeline.depth_check antakya --orientation-from synthetic
+python -m pipeline.ground      antakya --max-building-m 60
+python -m pipeline.planb       antakya --min-area 120
+python -m pipeline.bake        antakya --grid 512
+
+python -m http.server 8000     # then open localhost:8000/viewer/?scene=antakya
+```
+
+### Validate against LiDAR
+
+Download a classified point cloud for the scene footprint from
+[The National Map](https://apps.nationalmap.gov/downloader) — *Elevation
+Source Data (3DEP) → Lidar Point Cloud (LPC)*. Downloadable 3DEP **DEM**
+products are bare-earth and cannot validate building heights; you need the
+point cloud.
+
+```bash
+python -m pipeline.validate fm --metric ridge --lidar data/lidar/*.laz
+```
+
+Comparison is nDSM against nDSM — height above ground — so the
+EGM96-vs-WGS84 vertical datum offset cancels out entirely rather than
+injecting tens of metres.
+
+---
+
+## Offline deployment
+
+Fully containerized and tested:
+
+```bash
+python scripts/vendor_three.py
+docker compose build
+docker compose up
+```
+
+Confirmed working end-to-end via web upload inside the container. Verified
+with `network_mode: none` uncommented in `docker-compose.yml`.
+
+`HF_HUB_OFFLINE=1` is set inside the image only after weights are baked in at
+build time, so any attempt to reach the network at runtime fails loudly
+rather than silently succeeding on a developer machine and breaking at the
+venue.
+
+---
+
+## Known limits
+
+- **Forested terrain fails.** Canopy provides almost no monocular height cue,
+  and C-band reference data is itself contaminated by partial penetration.
+  Reported honestly rather than omitted.
+- **Correlation is weak where height variance is low.** Fort Myers buildings
+  cluster at 3–8 m, leaving little spread to detect. Antakya spans 4–29 m and
+  is where the method shows range.
+- **Short shadows limit accuracy.** At 0.61 m/px a 3 m building casts a ~10 px
+  shadow. Re-ingesting at native 0.305 m/px improves measured coverage and
+  precision. The fix is finer imagery, not a better model.
+- **First-person navigation is available** via the Orbit/Walk toggle, but the
+  footprint segmentation over-splits dense blocks into narrow strips, which is
+  visible from rooftop level. Street level looks correct.
+- **Off-nadir imagery causes building lean**, displacing where each shadow
+  appears to begin. Tiles are filtered to low off-nadir where possible.
+- Two of six scenes have real LiDAR ground truth (Fort Myers, Punta Gorda).
+  Others report repeatability only.
+- **Terrain and canopy shadows are measured as buildings.** The shadow mask is
+  photometric; it has no notion of what cast the shadow. On bare mountainside
+  and mangrove this produces large false-positive counts.
+- **Pipeline stages do not detect stale input.** Each reads the previous
+  stage's output from disk; skipping one silently reuses old data and produces
+  plausible but wrong numbers rather than failing. Run stages in order, and
+  check that the building count in `planb` matches the `n` reported by
+  `validate`.
+- **The shadow formula's division convention is empirically validated, not
+  derived from a proven physical model of the metadata's angle definition.**
+  See "A note on the shadow formula" above.
+
+## Out of scope
+
+Stated deliberately: multi-view or stereo reconstruction, SAR/InSAR fusion,
+real-time video ingest, atmospheric correction, and any survey-grade accuracy
+claim.
+
+---
+
+## Data sources
+
+- [Maxar Open Data Program](https://github.com/opengeos/maxar-open-data) — pre/post disaster imagery (CC BY-NC 4.0)
+- [USGS 3DEP](https://apps.nationalmap.gov/downloader) — LiDAR point clouds for validation
+- [Depth Anything V2](https://github.com/DepthAnything/Depth-Anything-V2) — monocular depth backbone

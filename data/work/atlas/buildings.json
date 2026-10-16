@@ -1,0 +1,561 @@
+{
+  "scene": "atlas",
+  "method": "shadow-direct (Plan B)",
+  "n_buildings": 54,
+  "n_measured": 20,
+  "median_height_m": 6.45,
+  "max_height_m": 11.07,
+  "fallback_height_m": 6.45,
+  "roof_pitch_deg": 22.6,
+  "median_roof_rise_m": 4.0,
+  "repeatability_mae_m": 1.41,
+  "repeatability_rmse_m": 1.99,
+  "buildings": [
+    {
+      "id": 1,
+      "row": 991.7019824804057,
+      "col": 127.39704933148917,
+      "area_m2": 4040.1,
+      "height_m": 11.07,
+      "n_rays": 25,
+      "method": "shadow",
+      "ridge_m": 15.07,
+      "roof_rise_m": 4.0,
+      "repeatability_m": 3.23
+    },
+    {
+      "id": 2,
+      "row": 969.7622382198953,
+      "col": 341.2958769633508,
+      "area_m2": 5692.2,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    },
+    {
+      "id": 3,
+      "row": 996.3548236937041,
+      "col": 603.8165949028279,
+      "area_m2": 3201.1,
+      "height_m": 9.22,
+      "n_rays": 13,
+      "method": "shadow",
+      "ridge_m": 13.22,
+      "roof_rise_m": 4.0,
+      "repeatability_m": 0.92
+    },
+    {
+      "id": 4,
+      "row": 995.0421105193076,
+      "col": 790.6190079893476,
+      "area_m2": 4476.3,
+      "height_m": 4.61,
+      "n_rays": 13,
+      "method": "shadow",
+      "ridge_m": 8.61,
+      "roof_rise_m": 4.0,
+      "repeatability_m": 0.92
+    },
+    {
+      "id": 5,
+      "row": 991.6692386831276,
+      "col": 503.5776748971193,
+      "area_m2": 724.2,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    },
+    {
+      "id": 6,
+      "row": 1000.2357219827586,
+      "col": 452.2648168103448,
+      "area_m2": 1382.8,
+      "height_m": 9.22,
+      "n_rays": 18,
+      "method": "shadow",
+      "ridge_m": 13.22,
+      "roof_rise_m": 4.0,
+      "repeatability_m": 0.0
+    },
+    {
+      "id": 7,
+      "row": 1000.6337595907928,
+      "col": 1003.9386189258312,
+      "area_m2": 728.3,
+      "height_m": 10.14,
+      "n_rays": 9,
+      "method": "shadow",
+      "ridge_m": 14.14,
+      "roof_rise_m": 4.0,
+      "repeatability_m": 0.92
+    },
+    {
+      "id": 8,
+      "row": 338.53099619615506,
+      "col": 978.8010691888558,
+      "area_m2": 3623.6,
+      "height_m": 6.45,
+      "n_rays": 30,
+      "method": "shadow",
+      "ridge_m": 10.45,
+      "roof_rise_m": 4.0,
+      "repeatability_m": 0.0
+    },
+    {
+      "id": 9,
+      "row": 588.9078593819974,
+      "col": 701.7465293327363,
+      "area_m2": 3327.4,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    },
+    {
+      "id": 10,
+      "row": 599.9207400639561,
+      "col": 755.9355870260393,
+      "area_m2": 1630.9,
+      "height_m": 6.45,
+      "n_rays": 1,
+      "method": "median-fill"
+    },
+    {
+      "id": 11,
+      "row": 95.90010004708098,
+      "col": 813.8527248116761,
+      "area_m2": 12660.0,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    },
+    {
+      "id": 12,
+      "row": 609.7794457274827,
+      "col": 799.2341801385681,
+      "area_m2": 1613.1,
+      "height_m": 0.92,
+      "n_rays": 5,
+      "method": "shadow",
+      "ridge_m": 4.92,
+      "roof_rise_m": 4.0,
+      "repeatability_m": 0.0
+    },
+    {
+      "id": 13,
+      "row": 992.3108375467135,
+      "col": 934.7781930094526,
+      "area_m2": 1694.6,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    },
+    {
+      "id": 14,
+      "row": 610.7456743798207,
+      "col": 647.1171565561809,
+      "area_m2": 1787.0,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    },
+    {
+      "id": 15,
+      "row": 153.86813799697237,
+      "col": 459.5617879053462,
+      "area_m2": 9351.2,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    },
+    {
+      "id": 16,
+      "row": 626.6159927423536,
+      "col": 856.4611197511664,
+      "area_m2": 2874.4,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    },
+    {
+      "id": 17,
+      "row": 628.328078817734,
+      "col": 588.3476425052779,
+      "area_m2": 2646.8,
+      "height_m": 5.53,
+      "n_rays": 26,
+      "method": "shadow",
+      "ridge_m": 9.53,
+      "roof_rise_m": 4.0,
+      "repeatability_m": 0.0
+    },
+    {
+      "id": 18,
+      "row": 71.70167098818784,
+      "col": 46.78723710746183,
+      "area_m2": 2586.1,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    },
+    {
+      "id": 19,
+      "row": 277.22591240875914,
+      "col": 22.525912408759122,
+      "area_m2": 2041.5,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    },
+    {
+      "id": 20,
+      "row": 668.9806371018113,
+      "col": 22.187695190505934,
+      "area_m2": 1192.8,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    },
+    {
+      "id": 21,
+      "row": 838.7116246168357,
+      "col": 669.6398255128507,
+      "area_m2": 3159.8,
+      "height_m": 6.45,
+      "n_rays": 1,
+      "method": "median-fill"
+    },
+    {
+      "id": 22,
+      "row": 428.24519940915803,
+      "col": 807.067454455933,
+      "area_m2": 756.6,
+      "height_m": 5.53,
+      "n_rays": 26,
+      "method": "shadow",
+      "ridge_m": 9.53,
+      "roof_rise_m": 4.0,
+      "repeatability_m": 1.84
+    },
+    {
+      "id": 24,
+      "row": 505.14919735599625,
+      "col": 716.4910292728989,
+      "area_m2": 789.0,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    },
+    {
+      "id": 25,
+      "row": 470.8261674552561,
+      "col": 756.9331413289447,
+      "area_m2": 1810.9,
+      "height_m": 6.45,
+      "n_rays": 16,
+      "method": "shadow",
+      "ridge_m": 10.45,
+      "roof_rise_m": 4.0,
+      "repeatability_m": 3.69
+    },
+    {
+      "id": 26,
+      "row": 397.7279942279942,
+      "col": 868.0934343434343,
+      "area_m2": 1032.7,
+      "height_m": 6.45,
+      "n_rays": 27,
+      "method": "shadow",
+      "ridge_m": 10.45,
+      "roof_rise_m": 4.0,
+      "repeatability_m": 0.92
+    },
+    {
+      "id": 27,
+      "row": 20.59519533004041,
+      "col": 484.46070947462954,
+      "area_m2": 1659.2,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    },
+    {
+      "id": 28,
+      "row": 476.0372944174195,
+      "col": 20.70789900393792,
+      "area_m2": 1608.2,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    },
+    {
+      "id": 29,
+      "row": 701.9522028748393,
+      "col": 495.37536519808344,
+      "area_m2": 3187.7,
+      "height_m": 6.45,
+      "n_rays": 22,
+      "method": "shadow",
+      "ridge_m": 10.45,
+      "roof_rise_m": 4.0,
+      "repeatability_m": 0.92
+    },
+    {
+      "id": 30,
+      "row": 589.3084398976982,
+      "col": 19.393350383631713,
+      "area_m2": 1456.6,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    },
+    {
+      "id": 31,
+      "row": 385.4312558722205,
+      "col": 18.69307860945819,
+      "area_m2": 1189.5,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    },
+    {
+      "id": 32,
+      "row": 842.8473268747757,
+      "col": 867.6523143164693,
+      "area_m2": 2076.5,
+      "height_m": 6.45,
+      "n_rays": 1,
+      "method": "median-fill"
+    },
+    {
+      "id": 33,
+      "row": 902.0740670220869,
+      "col": 812.3347296268088,
+      "area_m2": 1956.5,
+      "height_m": 6.45,
+      "n_rays": 7,
+      "method": "shadow",
+      "ridge_m": 10.45,
+      "roof_rise_m": 4.0,
+      "repeatability_m": 5.07
+    },
+    {
+      "id": 34,
+      "row": 576.2604135451004,
+      "col": 957.5966436919389,
+      "area_m2": 2486.3,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    },
+    {
+      "id": 35,
+      "row": 804.7149086944671,
+      "col": 916.6320523303352,
+      "area_m2": 1366.8,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    },
+    {
+      "id": 36,
+      "row": 741.4477204477205,
+      "col": 922.8711438711439,
+      "area_m2": 1364.6,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    },
+    {
+      "id": 37,
+      "row": 783.2128837443382,
+      "col": 396.85304479114245,
+      "area_m2": 740.2,
+      "height_m": 6.45,
+      "n_rays": 11,
+      "method": "shadow",
+      "ridge_m": 10.45,
+      "roof_rise_m": 4.0,
+      "repeatability_m": 1.38
+    },
+    {
+      "id": 38,
+      "row": 42.62993762993763,
+      "col": 297.2397782397782,
+      "area_m2": 1075.1,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    },
+    {
+      "id": 39,
+      "row": 894.8660714285714,
+      "col": 244.61011904761904,
+      "area_m2": 375.5,
+      "height_m": 9.22,
+      "n_rays": 43,
+      "method": "shadow",
+      "ridge_m": 13.22,
+      "roof_rise_m": 4.0,
+      "repeatability_m": 0.46
+    },
+    {
+      "id": 40,
+      "row": 683.953095684803,
+      "col": 1018.2457786116323,
+      "area_m2": 198.6,
+      "height_m": 5.53,
+      "n_rays": 11,
+      "method": "shadow",
+      "ridge_m": 7.18,
+      "roof_rise_m": 1.65,
+      "repeatability_m": 3.69
+    },
+    {
+      "id": 41,
+      "row": 80.92221304706854,
+      "col": 593.7106523534269,
+      "area_m2": 2255.7,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    },
+    {
+      "id": 42,
+      "row": 506.58701472556896,
+      "col": 913.3373493975904,
+      "area_m2": 556.6,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    },
+    {
+      "id": 43,
+      "row": 832.3600802407221,
+      "col": 309.3229689067202,
+      "area_m2": 371.4,
+      "height_m": 9.22,
+      "n_rays": 19,
+      "method": "shadow",
+      "ridge_m": 13.22,
+      "roof_rise_m": 4.0,
+      "repeatability_m": 0.92
+    },
+    {
+      "id": 44,
+      "row": 858.9703622392975,
+      "col": 274.384193194292,
+      "area_m2": 339.4,
+      "height_m": 10.14,
+      "n_rays": 30,
+      "method": "shadow",
+      "ridge_m": 14.14,
+      "roof_rise_m": 4.0,
+      "repeatability_m": 1.84
+    },
+    {
+      "id": 45,
+      "row": 809.2075117370892,
+      "col": 354.487323943662,
+      "area_m2": 396.7,
+      "height_m": 8.3,
+      "n_rays": 22,
+      "method": "shadow",
+      "ridge_m": 12.3,
+      "roof_rise_m": 4.0,
+      "repeatability_m": 0.0
+    },
+    {
+      "id": 46,
+      "row": 760.4046272493573,
+      "col": 432.55629820051416,
+      "area_m2": 724.6,
+      "height_m": 6.45,
+      "n_rays": 25,
+      "method": "shadow",
+      "ridge_m": 10.45,
+      "roof_rise_m": 4.0,
+      "repeatability_m": 1.38
+    },
+    {
+      "id": 47,
+      "row": 497.90736842105264,
+      "col": 872.1326315789473,
+      "area_m2": 177.0,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    },
+    {
+      "id": 48,
+      "row": 494.6983546617916,
+      "col": 840.9506398537477,
+      "area_m2": 203.8,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    },
+    {
+      "id": 49,
+      "row": 72.79034941763727,
+      "col": 352.23793677204657,
+      "area_m2": 223.9,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    },
+    {
+      "id": 50,
+      "row": 32.75105996365839,
+      "col": 223.58207147183526,
+      "area_m2": 615.0,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    },
+    {
+      "id": 51,
+      "row": 102.25549310168626,
+      "col": 150.6223811957077,
+      "area_m2": 729.0,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    },
+    {
+      "id": 52,
+      "row": 167.58277254374158,
+      "col": 178.4300134589502,
+      "area_m2": 553.6,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    },
+    {
+      "id": 53,
+      "row": 803.126754748142,
+      "col": 479.87097440132123,
+      "area_m2": 1804.5,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    },
+    {
+      "id": 54,
+      "row": 763.7433936022253,
+      "col": 506.86369958275384,
+      "area_m2": 535.7,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    },
+    {
+      "id": 55,
+      "row": 191.34954407294833,
+      "col": 57.972644376899694,
+      "area_m2": 122.6,
+      "height_m": 6.45,
+      "n_rays": 0,
+      "method": "median-fill"
+    }
+  ]
+}
