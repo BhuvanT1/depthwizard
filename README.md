@@ -5,7 +5,7 @@
 Smart India Hackathon 2026 · Problem Statement **SIH26175** · ISRO / Space
 Applications Centre · Theme: Disaster Management
 
-Built by team **WorksOnMyMachine** (formerly DepthWizards).
+Built by team **WorksOnMyMachine** .
 
 ---
 
