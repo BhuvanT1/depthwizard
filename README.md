@@ -270,13 +270,10 @@ downloads:
 python -m http.server 8000        # then open localhost:8000/viewer/
 ```
 
-**Want to re-run the pipeline?** The source GeoTIFFs (about 12.6 MB each) are
-published on the [`data-v1` release](https://github.com/BhuvanT1/depthwizard/releases/tag/data-v1)
-rather than committed. Fetch them, checksum-verified, then everything downstream
-regenerates in a few minutes:
+**Want to re-run the pipeline?** The source GeoTIFFs are committed too, so
+everything downstream regenerates in a few minutes:
 
 ```bash
-python scripts/download_data.py antakya fm     # or no arguments for all seven scenes
 python -m pipeline.ingest      data/raw/antakya.tif --max-size 1024
 python -m pipeline.ingest      data/raw/fm.tif      --max-size 2048
 python -m pipeline.depth_local antakya fm --model base
@@ -289,8 +286,8 @@ python -m pipeline.planb       fm
 python -m pipeline.bake        antakya fm --grid 512
 ```
 
-All five terrain scenes, and the stratification report (after
-`python scripts/download_data.py` and the same stages for each scene):
+All five terrain scenes, and the stratification report (after running the
+same stages for each scene):
 
 ```bash
 python -m pipeline.stratify --label antakya=urban fm=suburban atlas=hilly \
