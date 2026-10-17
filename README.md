@@ -5,11 +5,15 @@
 Smart India Hackathon 2026 · Problem Statement **SIH26175** · ISRO / Space
 Applications Centre · Theme: Disaster Management
 
-Built by team **WorksOnMyMachine**. **My part:** backend model training,
-research and concept, and the round 2 pitch at the internal hackathon that got
-the team selected. The team's commit history lives in
-**[ArnabTechiee/depthwizard](https://github.com/ArnabTechiee/depthwizard)**. See
-[Team and history](#team-and-history).
+Built by team **WorksOnMyMachine**.
+
+**My contributions:** backend model training, research and concept development,
+and the round 2 pitch at the internal hackathon, which earned the team its
+selection.
+
+The team's full commit history is in
+**[ArnabTechiee/depthwizard](https://github.com/ArnabTechiee/depthwizard)**
+(see [Team and history](#team-and-history)).
 
 ![Antakya scene in the 3D viewer, with the flood slider raised](docs/media/viewer.gif)
 
@@ -434,11 +438,11 @@ repository was uploaded in October 2026 and does not carry that history.
 
 ### My role
 
-- **Model training:** worked with the team on training the backend models.
-- **Research and concept:** did the background research and helped the team get
-  clear on the core concept and approach.
-- **Pitch:** presented the project in round 2 of the internal hackathon, where
-  the team was selected.
+- **Model training:** Contributed to training the backend models.
+- **Research and concept development:** Conducted the background research and
+  helped define the project's core concept and technical approach.
+- **Pitch:** Presented the project in round 2 of the internal hackathon, which
+  earned the team its selection.
 
 ## Data sources
 
