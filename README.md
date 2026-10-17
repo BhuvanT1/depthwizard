@@ -5,10 +5,11 @@
 Smart India Hackathon 2026 · Problem Statement **SIH26175** · ISRO / Space
 Applications Centre · Theme: Disaster Management
 
-Built by team **WorksOnMyMachine**. This repository is a
-copy of the team repository,
-**[ArnabTechiee/depthwizard](https://github.com/ArnabTechiee/depthwizard)**,
-where the full commit history lives. See [Team and history](#team-and-history).
+Built by team **WorksOnMyMachine**. **My part:** backend model training,
+research and concept, and the round 2 pitch at the internal hackathon that got
+the team selected. The team's commit history lives in
+**[ArnabTechiee/depthwizard](https://github.com/ArnabTechiee/depthwizard)**. See
+[Team and history](#team-and-history).
 
 ![Antakya scene in the 3D viewer, with the flood slider raised](docs/media/viewer.gif)
 
@@ -428,11 +429,16 @@ claim.
 Built for Smart India Hackathon 2026 by team WorksOnMyMachine. The original
 repository,
 [ArnabTechiee/depthwizard](https://github.com/ArnabTechiee/depthwizard), is
-maintained by Arnab Mondal and holds the complete commit history; this copy was
-uploaded in October 2026 and does not carry that history.
+maintained by Arnab Mondal and holds the complete commit history; this
+repository was uploaded in October 2026 and does not carry that history.
 
-<!-- My role: replace this comment with 2-4 bullets on exactly what you built,
-     e.g. which pipeline stages, experiments or viewer features were yours. -->
+### My role
+
+- **Model training:** worked with the team on training the backend models.
+- **Research and concept:** did the background research and helped the team get
+  clear on the core concept and approach.
+- **Pitch:** presented the project in round 2 of the internal hackathon, where
+  the team was selected.
 
 ## Data sources
 
