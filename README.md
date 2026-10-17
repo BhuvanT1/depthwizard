@@ -5,7 +5,7 @@
 Smart India Hackathon 2026 · Problem Statement **SIH26175** · ISRO / Space
 Applications Centre · Theme: Disaster Management
 
-Built by team **WorksOnMyMachine** (formerly DepthWizards). This repository is a
+Built by team **WorksOnMyMachine**. This repository is a
 copy of the team repository,
 **[ArnabTechiee/depthwizard](https://github.com/ArnabTechiee/depthwizard)**,
 where the full commit history lives. See [Team and history](#team-and-history).
@@ -428,8 +428,8 @@ claim.
 
 ## Team and history
 
-Built for Smart India Hackathon 2026 by team WorksOnMyMachine (formerly
-DepthWizards). The original repository,
+Built for Smart India Hackathon 2026 by team WorksOnMyMachine. The original
+repository,
 [ArnabTechiee/depthwizard](https://github.com/ArnabTechiee/depthwizard), is
 maintained by Arnab Mondal and holds the complete commit history; this copy was
 uploaded in October 2026 and does not carry that history.
